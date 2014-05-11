@@ -15,11 +15,14 @@ var updateCounter = function(){
 };
 
 var showAlarmMessage = function(){
+		var message = DEFAULT_MESSAGE;
 		if(alarm.message.length > 0){
-				alarm.output.textContent = alarm.message;
-		}else{
-				alarm.output.textContent = DEFAULT_MESSAGE;
+				message = alarm.message;
 		}
+		if(Notification.permission == "granted"){
+				var notification = new Notification(message);
+		}
+		alarm.output.textContent = message;
 };
 
 var update = function(){
@@ -53,7 +56,13 @@ var initApp = function(){
 		alarm.durationSelect = document.querySelector("#duration");
 		alarm.messageInput = document.querySelector("#message");
 		alarm.output = document.querySelector("#countdown");
-		
+
+		Notification.requestPermission(function(status){
+				if(Notification.permission != status){
+						Notification.permission = status;
+				}
+		});
+
 		var startButton = document.querySelector("#start");
 		startButton.addEventListener("click", startAlarm);
 };
