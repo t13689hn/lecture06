@@ -1,48 +1,48 @@
 var INTERVAL = 1000;
 var DEFAULT_MESSAGE = "終了";
 
-var timer = {
+var alarm = {
 		duration: -1,
 		message: ""
 };
 
 var formatCounterAsString = function(){
-		return "あと" + timer.duration + "秒";
+		return "あと" + alarm.duration + "秒";
 };
 
 var updateCounter = function(){
-		timer.output.textContent = formatCounterAsString();
+		alarm.output.textContent = formatCounterAsString();
 };
 
-var showAlermMessage = function(){
-		if(timer.message.length > 0){
-				timer.output.textContent = timer.message;
+var showAlarmMessage = function(){
+		if(alarm.message.length > 0){
+				alarm.output.textContent = alarm.message;
 		}else{
-				timer.output.textContent = DEFAULT_MESSAGE;
+				alarm.output.textContent = DEFAULT_MESSAGE;
 		}
 };
 
 var update = function(){
-		timer.duration = timer.duration - 1;
+		alarm.duration = alarm.duration - 1;
 		if(isReadyToCountdown()){
 				updateCounter();
 				window.setTimeout(update, INTERVAL);
 		}else{
-				showAlermMessage();
+				showAlarmMessage();
 		}
 };
 
 var isReadyToCountdown = function(){
-		return Number.isInteger(timer.duration) && timer.duration > 0;
+		return Number.isInteger(alarm.duration) && alarm.duration > 0;
 };
 
-var setupTimer = function(durationString, message){
-		timer.duration = Number(durationString),
-		timer.message = message;
+var setupAlarm = function(durationString, message){
+		alarm.duration = Number(durationString),
+		alarm.message = message;
 };
 
-var startTimer = function(){
-		setupTimer(timer.durationSelect.value, timer.messageInput.value);
+var startAlarm = function(){
+		setupAlarm(alarm.durationSelect.value, alarm.messageInput.value);
 		if(isReadyToCountdown()){
 				updateCounter();
 				window.setTimeout(update, INTERVAL);
@@ -50,12 +50,12 @@ var startTimer = function(){
 };
 
 var initApp = function(){
-		timer.durationSelect = document.querySelector("#duration");
-		timer.messageInput = document.querySelector("#message");
-		timer.output = document.querySelector("#countdown");
+		alarm.durationSelect = document.querySelector("#duration");
+		alarm.messageInput = document.querySelector("#message");
+		alarm.output = document.querySelector("#countdown");
 		
 		var startButton = document.querySelector("#start");
-		startButton.addEventListener("click", startTimer);
+		startButton.addEventListener("click", startAlarm);
 };
 
 initApp();
